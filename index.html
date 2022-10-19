@@ -1,7 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script>
         $(document).ready(function(){
             $(".hide").click(function(){
@@ -14,22 +20,66 @@
                alert("Hello Ester");
            });
         });
-
-        $(document).ready(function (){
-            $("button").click(function (){
-                $.get("http://192.168.100.6:8080/blogs/get " , function (data, status){
-                   alert("Data" + data + "/nStatus" + status);
-                });
-            });
-        });
+        //
+        // $(document).ready(function (){
+        //     $("button").click(function (){
+        //         $.get("http://192.168.100.6:8080/blogs/get " , function (data, status){
+        //            alert("Data" + data + "/nStatus" + status);
+        //         });
+        //     });
+        // });
 
         $(function (){
-            $.ajax ({
+        $.ajax ({
                 type: 'GET',
-                url: 'http://192.168.100.6:8080/blogs/get ',
+                url: 'http://192.168.100.6:8080/blogs/get',
+                headers: {
+                    "Content-Type":"application/json",
+                    "accept": "application/json",
+                    'Access-Control-Allow-Origin': '*',
+                },
                 success: function (blogs){
-                   console.log('success' , blogs);
+                    console.log(blogs);
+                    let elem = JSON.stringify(blogs);
+                    let jsonData = JSON.parse(elem);
+                    let divCard = document.getElementById("card-727");
+                    let row = document.createElement('div');
+                    row.setAttribute('class','row');
+
+                    for (let x = 0; x < jsonData.length; x++) {
+                       let card = document.createElement('div');
+                        card.setAttribute('id', jsonData[x].id);
+                        card.setAttribute('class', 'col-sm-3 card');
+                        card.setAttribute('style', 'border:solid; height:300px;word-break: break-all; margin:1%');
+
+                        let title = document.createElement('p');
+                        title.innerText = 'Title: ' + jsonData[x].title;
+
+                        let content = document.createElement('p');
+                        textContent =  'Content: ' + jsonData[x].content.substring(0,120).replace( /(<([^>]+)>)/ig, '');
+                        if(jsonData[x].content.length > 120){
+                            textContent = textContent + '...';
+                        }
+
+                        content.innerText = textContent
+
+                        let date = document.createElement('p');
+                        date.innerText = jsonData[x].date;
+
+                        card.append(title);
+                        card.append(content);
+                        card.append(date);
+
+                        row.append(card)
+                        divCard.append(row)
+
+                    }
+                },
+                error: function (err) {
+                    console.log("AJAX error in request: " + JSON.stringify(err, null, 2));
                 }
+
+
             });
         });
 
@@ -37,19 +87,22 @@
 </head>
 <body>
 
+<h2>BLOGS</h2>
+<div id="card-727">
+</div>
+
+<div id="blogs"  class="awesome-css-stuff"></div>
 
 
 
+<!--<p>Hello Estera!</p>-->
 
-<h2>JQuery & Ajax</h2>
+<!--<button class="hide">Click to hide</button>-->
+<!--<br>-->
+<!--<br>-->
+<!--&lt;!&ndash;<button> GET request to a page</button>&ndash;&gt;-->
+<!--<br>-->
+<!--<h1 class="ester">Say hello to Ester</h1>-->
 
-<p>Hello Estera!</p>
-
-<button class="hide">Click to hide</button>
-<br>
-<br>
-<button> GET request to a page</button>
-<br>
-<h1 class="ester">Say hello to Ester</h1>
 </body>
 </html>
