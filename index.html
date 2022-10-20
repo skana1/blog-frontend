@@ -30,7 +30,7 @@
         // });
 
         $(function (){
-        $.ajax ({
+            $.ajax ({
                 type: 'GET',
                 url: 'http://192.168.100.6:8080/blogs/get',
                 headers: {
@@ -38,6 +38,7 @@
                     "accept": "application/json",
                     'Access-Control-Allow-Origin': '*',
                 },
+
                 success: function (blogs){
                     console.log(blogs);
                     let elem = JSON.stringify(blogs);
@@ -50,22 +51,46 @@
                        let card = document.createElement('div');
                         card.setAttribute('id', jsonData[x].id);
                         card.setAttribute('class', 'col-sm-3 card');
-                        card.setAttribute('style', 'border:solid; height:300px;word-break: break-all; margin:1%');
+                        card.setAttribute('style', 'border:solid; height:300px;word-break: break-all; margin:1%;border-radius: 15px;' +
+                            '              left: 100px;');
+
+
+
+                        let img = document.createElement('img');
+                        img.setAttribute('style', '    ' +
+                            '    width: 303px;\n' +
+                            '    height: 165px;\n' +
+                            '    margin-left: -15px;\n' +
+                            '    border-radius: 15px;\n');
+                        img.setAttribute('class', 'images');
+                        if(jsonData[x].images.length > 0){
+
+                            img.src = 'http://192.168.100.6:8080/get/image/' + jsonData[x].images[0].id;
+                        };
+
 
                         let title = document.createElement('p');
-                        title.innerText = 'Title: ' + jsonData[x].title;
+                        title.innerText = jsonData[x].title;
+
+                        title.setAttribute('style','font-weight: 600;font-size: 20px;');
 
                         let content = document.createElement('p');
-                        textContent =  'Content: ' + jsonData[x].content.substring(0,120).replace( /(<([^>]+)>)/ig, '');
-                        if(jsonData[x].content.length > 120){
+                        content.setAttribute('style','margin-top:-20px;');
+
+                        textContent = jsonData[x].content.substring(0,70).replace( /(<([^>]+)>)/ig, '');
+                        if(jsonData[x].content.length > 70){
                             textContent = textContent + '...';
                         }
 
                         content.innerText = textContent
 
-                        let date = document.createElement('p');
+                        let date = document.createElement('p1');
+                        date.setAttribute('style','    ' +
+                            '    margin-left: 170px;\n' +
+                            '    margin-top: 35px;')
                         date.innerText = jsonData[x].date;
 
+                        card.append(img);
                         card.append(title);
                         card.append(content);
                         card.append(date);
@@ -73,28 +98,49 @@
                         row.append(card)
                         divCard.append(row)
 
+
+
                     }
                 },
                 error: function (err) {
                     console.log("AJAX error in request: " + JSON.stringify(err, null, 2));
+
+                    alert('Cannot connect the computer to the server because either another software installation is in progress or,\n' +
+                        'the computer has a restart pending. Either complete the installation process, or,\n' +
+                        'restart the computer and try to connect it again :)');
                 }
 
 
             });
         });
 
+
+
     </script>
 </head>
 <body>
 
-<h2>BLOGS</h2>
+
 <div id="card-727">
+    <h2>BLOGS</h2>
 </div>
 
 <div id="blogs"  class="awesome-css-stuff"></div>
 
+<style>
+    .h2, h2 {
+        margin-left: 33rem;
+        font-size: 40px;
+        margin-top: 30px;
+        margin-bottom: 20px;
+    }
 
-
+    .h7 ,h7 {
+        align-items: center;
+        text-align: center;
+        font-size: 25px;
+    }
+</style>
 <!--<p>Hello Estera!</p>-->
 
 <!--<button class="hide">Click to hide</button>-->
