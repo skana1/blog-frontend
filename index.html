@@ -2,248 +2,253 @@
 <html lang="en">
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script>
-        $(document).ready(function(){
-            $(".hide").click(function(){
-                $("p").hide();
-            });
-        });
-
-        $(document).ready(function (){
-           $(".ester").mouseenter(function (){
-               alert("Hello Ester");
-           });
-        });
-        //
-        // $(document).ready(function (){
-        //     $("button").click(function (){
-        //         $.get("http://192.168.100.6:8080/blogs/get " , function (data, status){
-        //            alert("Data" + data + "/nStatus" + status);
-        //         });
-        //     });
-        // });
-
-            $.ajax ({
-                type: 'GET',
-                url: 'http://192.168.100.6:8080/blogs/get',
-                headers: {
-                    "Content-Type":"application/json",
-                    "accept": "application/json",
-                    'Access-Control-Allow-Origin': '*',
-                },
-
-                success: function (blogs){
-                    console.log(blogs);
-                    let jsonData = blogs;
-                    let divCard = document.getElementById('card-727');
-                    let row = document.createElement('div');
-                    row.setAttribute('class','row');
-
-                    for (let x = 0; x < jsonData.length; x++) {
-                        let card = createCard(jsonData[x]);
-                        let img = createImage(jsonData[x]);
-                        let title = createTitle(jsonData[x]);
-                        let content = createContent(jsonData[x]);
-                        let date = createDate(jsonData[x]);
-                        let deleteAndEditDiv = createDeleteAndEditButton(jsonData[x]);
-
-                        card.append(img);
-                        card.append(deleteAndEditDiv);
-                        card.append(title);
-                        card.append(content);
-                        card.append(date);
-
-                        row.append(card);
-
-                        divCard.append(row);
-                    }
-                },
-                error: function (err) {
-                    console.log("AJAX error in request: " + JSON.stringify(err, null, 2));
-
-                    alert('Cannot connect the computer to the server. Either complete the installation process,or restart the computer and try to connect it again :)');
-                }
-        });
-
-
-
-        function createImage(blog){
-
-            let img = document.createElement('img');
-            img.setAttribute('style', '    ' +
-                '    width: 303px;\n' +
-                '    height: 165px;\n' +
-                '    margin-left: -15px;\n' +
-                '    border-radius: 15px;\n');
-            img.setAttribute('class', 'images');
-            if(blog.images.length > 0){
-
-                img.src = 'http://192.168.100.6:8080/get/image/' + blog.images[0].id;
-            };
-
-
-            return img;
-        }
-
-        function createCard(blog) {
-            let card = document.createElement('div');
-            card.setAttribute('id', blog.id);
-            card.setAttribute('class', 'col-sm-3 card');
-            card.setAttribute('style', 'border:solid; height:300px;word-break: break-all; margin:1%;border-radius: 15px;' +
-                '              left: 100px;');
-
-            return card;
-        }
-
-        function createTitle(blog){
-            let title = document.createElement('p');
-            title.innerText = blog.title;
-
-            title.setAttribute('style','font-weight: 600;font-size: 20px;');
-
-            return title;
-        }
-
-        function createContent(blog){
-            let content = document.createElement('p');
-            content.setAttribute('style','margin-top:-20px;');
-
-            textContent = blog.content.substring(0,70).replace( /(<([^>]+)>)/ig, '');
-            if(blog.content.length > 70){
-                textContent = textContent + '...';
-            }
-
-            content.innerText = textContent
-
-            return content;
-        }
-
-        function createDate(blog){
-            let date = document.createElement('p');
-            date.setAttribute('style','    ' +
-                '    margin-left: 170px;\n' +
-                '    margin-top: 35px;')
-            date.innerText = blog.date;
-
-            return date;
-        }
-
-        function createDeleteAndEditButton(blog){
-
-            let deleteOrEditDiv = document.createElement('div');
-
-            let editButton = document.createElement("button");
-            editButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">\n' +
-                '  <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>\n' +
-                '</svg>';
-            editButton.onclick = function () {
-                alert("EDIT");
-            };
-
-            let deleteButton = document.createElement("button");
-            deleteButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" ' +
-                'class="bi bi-trash3" viewBox="0 0 16 16">\n' +
-                '  <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>\n' +
-                '</svg>';
-            deleteButton.onclick =
-                $.ajax ({
-                    type: 'GET',
-                    url: 'http://192.168.100.6:8080/blogs/get',
-                    headers: {
-                        "Content-Type":"application/json",
-                        "accept": "application/json",
-                        'Access-Control-Allow-Origin': '*',
-                    },
-
-                    success: function (blogs){
-                        console.log(blogs);
-                    }
-
-                    $.ajax ({
-                        type: 'GET',
-                        url: 'http://192.168.100.6:8080/blogs/get',
-                        headers: {
-                            "Content-Type":"application/json",
-                            "accept": "application/json",
-                            'Access-Control-Allow-Origin': '*',
-                        },
-                });
-
-
-
-            //     function Delete () {
-            //     const url = 'http://192.168.100.6:8080/blogs/delete/';
-            //     const initDetails = {
-            //         method: 'DELETE',
-            //         headers: {
-            //             "Content-Type":"application/json",
-            //             "accept": "application/json",
-            //             'Access-Control-Allow-Origin': '*',
-            //         },
-            //     }
-            //     fetch( url, initDetails )
-            //         .then( response =>
-            //             {
-            //                 if ( response.status !== 200 )
-            //                 {
-            //                     console.log( 'There was a problem. Status Code: ' +
-            //                         response.status );
-            //                     return;
-            //                 }
-            //
-            //             }
-            //         )
-            // };
-
-
-
-            deleteOrEditDiv.setAttribute('style','margin-left:205px;') ;
-
-            deleteOrEditDiv.append(deleteButton);
-            deleteOrEditDiv.append(editButton);
-
-            return deleteOrEditDiv;
-
-        }
-    </script>
+    <meta charset="utf-8" />
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+            crossorigin="anonymous"
+    />
+    <script></script>
 </head>
 <body>
-
-
 <div id="card-727">
     <h2>BLOGS</h2>
+    <div class="addButton" style="margin-left: 100px">
+        <button
+                id="myBtn"
+                style="
+            border-radius: 7px;
+            width: 100px;
+            height: 40px;
+            background-color: #4e74df;
+            color: #fefefe;
+          "
+        >
+            Add Blog
+        </button>
+    </div>
 </div>
 
-<div id="blogs"  class="awesome-css-stuff"></div>
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close">&times;</span>
+            <h3>Add a new blog</h3>
+        </div>
+        <div class="modal-body">
+            <form action="http://192.168.100.6:8080/blogs/store" method="post">
+                <div style="display: flex">
+                    <label for="id" style="margin-right: 20px">ID: </label>
+                    <input
+                            type="number"
+                            id="id"
+                            name="id"
+                            style="margin-right: 25px"
+                    /><br /><br />
+                    <label for="title" style="margin-right: 36px">Title:</label>
+                    <input type="text" id="title" name="title" /><br /><br />
+                    <label for="img" style="margin-right: 10px; margin-left: 30px"
+                    >Image:</label
+                    >
+                    <input
+                            type="file"
+                            id="img"
+                            name="img"
+                            class="file-upload-input"
+                            onchange="readURL(this)"
+                            accept="Image/*"
+                    /><br /><br />
+                </div>
+                <br /><br />
+
+                <div style="display: flex">
+                    <div style="display: flex">
+                        <label for="date" style="margin-right: 20px">Date:</label>
+                        <input
+                                type="date"
+                                id="date"
+                                name="date"
+                                style="
+                    width: 191px;
+                    margin-right: 29px;
+                    margin-left: -19px;
+                    height: 50px;
+                  "
+                        /><br /><br />
+                    </div>
+                    <div style="display: flex">
+                        <div style="margin-left: -10px">
+                            <label for="content">Content: </label>
+                        </div>
+                        <div style="margin-left: 10px">
+                  <textarea
+                          id="content"
+                          name="content"
+                          rows="2s.5"
+                          cols="24"
+                          style="margin-right: 5px"
+                  >
+                  </textarea
+                  ><br /><br />
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <input
+                    type="submit"
+                    style="
+              border-radius: 7px;
+              width: 100px;
+              height: 40px;
+              background-color: #fefefe;
+              color: #4e74df;
+            "
+                    value="Submit"
+            />
+        </div>
+    </div>
+</div>
+
+<div id="blogs" class="awesome-css-stuff"></div>
 
 <style>
-    .h2, h2 {
+    label {
+        margin-left: 15px;
+        display: inline-block;
+        margin-bottom: 0.5rem;
+    }
+
+    .h2,
+    h2 {
         margin-left: 33rem;
         font-size: 40px;
         margin-top: 30px;
         margin-bottom: 20px;
     }
 
-    .h7 ,h7 {
+    .h3,
+    h3 {
+        font-size: 1.75rem;
+        margin-left: 25rem;
+    }
+    .h7,
+    h7 {
         align-items: center;
         text-align: center;
         font-size: 25px;
     }
+
+    /* The Modal (background) */
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        left: 0;
+        bottom: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0, 0, 0); /* Fallback color */
+        background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+        -webkit-animation-name: fadeIn; /* Fade in the background */
+        -webkit-animation-duration: 0.4s;
+        animation-name: fadeIn;
+        animation-duration: 0.4s;
+    }
+
+    /* Modal Content */
+    .modal-content {
+        position: fixed;
+        top: 0;
+        background-color: #fefefe;
+        width: 100%;
+        -webkit-animation-name: slideIn;
+        -webkit-animation-duration: 0.4s;
+        animation-name: slideIn;
+        animation-duration: 0.4s;
+    }
+
+    /* The Close Button */
+    .close {
+        color: white;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .modal-header {
+        padding: 2px 16px;
+        background-color: #4e74df;
+        color: white;
+        height: 50px;
+    }
+
+    .modal-body {
+        padding: 2px 16px;
+    }
+
+    .modal-footer {
+        padding: 2px 16px;
+        background-color: #4e74df;
+        color: white;
+    }
+
+    @-webkit-keyframes slideIn {
+        from {
+            top: -300px;
+            opacity: 0;
+        }
+        to {
+            top: 0;
+            opacity: 1;
+        }
+    }
+
+    @keyframes slideIn {
+        from {
+            top: -300px;
+            opacity: 0;
+        }
+        to {
+            top: 0;
+            opacity: 1;
+        }
+    }
+
+    @-webkit-keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
 </style>
-<!--<p>Hello Estera!</p>-->
 
-<!--<button class="hide">Click to hide</button>-->
-<!--<br>-->
-<!--<br>-->
-<!--&lt;!&ndash;<button> GET request to a page</button>&ndash;&gt;-->
-<!--<br>-->
-<!--<h1 class="ester">Say hello to Ester</h1>-->
-
+<script src="hello.js"></script>
 </body>
 </html>
