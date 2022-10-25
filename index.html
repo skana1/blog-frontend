@@ -2,7 +2,12 @@
 <html lang="en">
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
+    <script src="https://cdn.tiny.cloud/1/cyosdq7ivz0h2uicnhnkky2no8viq93lj7e370rc4w500rro/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <!-- The script above *must* be listed first because it must be loaded first. -->
+    <!-- If it is not listed (and loaded) first, TinyMCE will not work. -->
+    <!-- Also: <hostname.tld> above *must* be replaced with the TinyMCE server’s FQDN. -->
+    <script src="https://cdn.tiny.cloud/1/cyosdq7ivz0h2uicnhnkky2no8viq93lj7e370rc4w500rro/tinymce/6/plugins.min.js" referrerpolicy="origin"></script>
+    <!-- This script provides access to tinyMCE’s premium plugins. -->
     <meta charset="utf-8" />
     <meta
             name="viewport"
@@ -42,80 +47,104 @@
             <h3>Add a new blog</h3>
         </div>
         <div class="modal-body">
-            <form action="http://192.168.100.6:8080/blogs/store" method="post">
-                <div style="display: flex">
-                    <label for="id" style="margin-right: 20px">ID: </label>
-                    <input
-                            type="number"
-                            id="id"
-                            name="id"
-                            style="margin-right: 25px"
-                    /><br /><br />
-                    <label for="title" style="margin-right: 36px">Title:</label>
-                    <input type="text" id="title" name="title" /><br /><br />
-                    <label for="img" style="margin-right: 10px; margin-left: 30px"
-                    >Image:</label
-                    >
-                    <input
-                            type="file"
-                            id="img"
-                            name="img"
-                            class="file-upload-input"
-                            onchange="readURL(this)"
-                            accept="Image/*"
-                    /><br /><br />
-                </div>
-                <br /><br />
+<!--            <form id="FORM">-->
+<!--                <div style="display: flex">-->
+<!--                    <label for="title" style="margin-right: 6px">Title:</label>-->
+<!--                    <input type="text" id="title" name="title" /><br /><br />-->
+<!--&lt;!&ndash;                    <label for="img" style="margin-right: 10px; margin-left: 30px"&ndash;&gt;-->
+<!--&lt;!&ndash;                    >Image:</label&ndash;&gt;-->
+<!--&lt;!&ndash;                    >&ndash;&gt;-->
+<!--&lt;!&ndash;                    <input&ndash;&gt;-->
+<!--&lt;!&ndash;                            type="file"&ndash;&gt;-->
+<!--&lt;!&ndash;                            id="img"&ndash;&gt;-->
+<!--&lt;!&ndash;                            name="img"&ndash;&gt;-->
+<!--&lt;!&ndash;                            class="file-upload-input"&ndash;&gt;-->
+<!--&lt;!&ndash;                            onchange="readURL(this)"&ndash;&gt;-->
+<!--&lt;!&ndash;                            accept="Image/*"&ndash;&gt;-->
+<!--&lt;!&ndash;                    /><br /><br />&ndash;&gt;-->
+<!--                </div>-->
+<!--                <br /><br />-->
 
-                <div style="display: flex">
-                    <div style="display: flex">
-                        <label for="date" style="margin-right: 20px">Date:</label>
-                        <input
-                                type="date"
-                                id="date"
-                                name="date"
-                                style="
-                    width: 191px;
-                    margin-right: 29px;
-                    margin-left: -19px;
-                    height: 50px;
-                  "
-                        /><br /><br />
-                    </div>
-                    <div style="display: flex">
-                        <div style="margin-left: -10px">
-                            <label for="content">Content: </label>
+<!--                <div style="display: flex">-->
+<!--                    <div style="display: flex">-->
+<!--                        <label for="date" style="margin-right: 20px">Date:</label>-->
+<!--                        <input-->
+<!--                                type="date"-->
+<!--                                id="date"-->
+<!--                                name="date"-->
+<!--                                style="-->
+<!--                    width: 191px;-->
+<!--                    margin-right: 29px;-->
+<!--                    margin-left: -19px;-->
+<!--                    height: 50px;-->
+<!--                  "-->
+<!--                        /><br /><br />-->
+<!--                    </div>-->
+<!--                    <div style="display: flex">-->
+
+<!--                        <div style="margin-left: -10px">-->
+<!--                            <label for="content">Content: </label>-->
+<!--                        </div>-->
+
+<!--                        <div style="margin-left: 10px;">-->
+<!--                            <textarea name="content" id="content" style="width: 480px;height: 180px;"></textarea>-->
+<!--                            <br /><br />-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </form>-->
+
+
+
+
+            <div id="divstyle">
+                <div class="container text-center">
+                    <form id="Form">
+                        <div class="form-group">
+                            <label for="title">Title</label>
+                            <input
+                                    type="text"
+                                    name="title"
+                                    class="form-control"
+                                    id="title"
+                            />
                         </div>
-                        <div style="margin-left: 10px">
-                  <textarea
-                          id="content"
-                          name="content"
-                          rows="2s.5"
-                          cols="24"
-                          style="margin-right: 5px"
-                  >
-                  </textarea
-                  ><br /><br />
+                        <div class="form-group">
+                            <label for="date">Date</label>
+                            <input
+                                    type="date"
+                                    name="date"
+                                    class="form-control"
+                                    id="date"
+                            />
                         </div>
-                    </div>
+                        <div class="form-group">
+                            <label for="content">Enter your content</label>
+                            <textarea
+                                    name="content"
+                                    class="form-control"
+                                    id="content"
+                                    rows="3"
+                            ></textarea>
+                        </div>
+                        <button type="button" class="btn btn-primary bin">Submit</button>
+                    </form>
+                    <br />
+                    <div class="result"></div>
                 </div>
-            </form>
+            </div>
+
+
         </div>
         <div class="modal-footer">
-            <input
-                    type="submit"
-                    style="
-              border-radius: 7px;
-              width: 100px;
-              height: 40px;
-              background-color: #fefefe;
-              color: #4e74df;
-            "
-                    value="Submit"
-            />
+
         </div>
     </div>
 </div>
+
+
+
+
 
 <div id="blogs" class="awesome-css-stuff"></div>
 
@@ -248,7 +277,6 @@
         }
     }
 </style>
-
-<script src="hello.js"></script>
+<script src="script.js"></script>
 </body>
 </html>

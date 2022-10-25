@@ -197,3 +197,46 @@ window.onclick = function(event) {
 $(document).ready(function(){
     readURL = function(input) {}
 });
+
+tinymce.init({
+    selector: 'textarea',
+    plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+    toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+});
+
+$(document).ready(function () {
+    $(".bin").click(function () {
+        //var datastring = $("#Form").serialize();
+        var data = {title: $("#title").val(), date: $("#date").val(), content: tinyMCE.get('content').getContent()};
+        console.log(data);
+        console.log($("#title").val());
+        console.log($("#date").val());
+        console.log(tinyMCE.get('content').getContent());
+        $.ajax({
+            type: "POST",
+            url: "http://192.168.100.6:8080/blogs/store",
+            data: JSON.stringify(data),
+            headers: {
+                "Content-Type":"application/json",
+                "Accept": "application/json",
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Credentials' : 'true',
+            },
+            success: function (data) {
+                var obj = JSON.stringify(data);
+                $("").append(
+                    '</textarea></li><li class="list-group-item active">Result</li><li class="list-group-item">Title: ' +
+                    data["form"]["title"] +
+                    '</li><li class="list-group-item">Data: ' +
+                    data["form"]["data"] +
+                    '</li><li class="list-group-item">Content: ' +
+                    data["form"]["text"] +
+                    "</li></ul></div>"
+                );
+            },
+            error: function () {
+                $("").append("Error occured");
+            },
+        });
+    });
+});
